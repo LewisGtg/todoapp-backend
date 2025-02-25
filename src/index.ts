@@ -1,8 +1,9 @@
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import sequelize from "./db";
-import Task from "./models/task.model";
 import router from "./routes";
+import cors from "cors";
+import corsOptions from "./config/cors.config";
 
 dotenv.config();
 
@@ -11,6 +12,7 @@ const port = process.env.PORT || 5050;
 
 app.use(express.json());
 app.use(router);
+app.use(cors(corsOptions));
 
 app.listen(port, async () => {
     console.log(`[server]: Server is running at http://localhost:${port}`);
