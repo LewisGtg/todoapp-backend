@@ -4,6 +4,7 @@ import sequelize from "./db";
 import router from "./routes";
 import cors from "cors";
 import corsOptions from "./config/cors.config";
+import Task from "./models/task.model";
 
 dotenv.config();
 
@@ -15,7 +16,7 @@ app.use(router);
 app.use(cors(corsOptions));
 
 app.listen(port, async () => {
-    console.log(`[server]: Server is running at http://localhost:${port}`);
+    console.log(`[server]: Server is running at http://localhost:${port}/api`);
     try {
         await sequelize.authenticate();
         console.log('Connection has been established successfully.');

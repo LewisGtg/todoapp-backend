@@ -4,9 +4,9 @@ import taskRouter from './task.route';
 const router = express.Router();
 
 // Define your routes here
-router.use('/tasks', taskRouter);
+router.use('/api/task', taskRouter);
 
-router.get('/', (req, res) => {
+router.get('/api', (req, res) => {
     res.send('Welcome to the Todo App API');
 });
 
