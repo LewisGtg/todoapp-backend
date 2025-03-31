@@ -21,8 +21,8 @@ export function createTask(req: Request<{}, {}, CreateTaskDto>, res: Response): 
         .catch((err: Error) => res.status(500).json(err));
 }
 
-export function getAllTasks(req: Request, res: Response): void {
-    Task.findAll()
+export async function getAllTasks(req: Request, res: Response): Promise<any> {
+    return Task.findAll()
         .then((task: ITask) => res.status(200).json(task))
         .catch((err: Error) => res.status(500).json(err));
 }
