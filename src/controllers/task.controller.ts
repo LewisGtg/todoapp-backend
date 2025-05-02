@@ -1,13 +1,11 @@
 import { Request, response, Response } from 'express';
-import Task from '../models/task.model';
+import Task, { TaskAttributes } from '../models/task';
 import { CreateTaskDto } from 'src/dtos/CreateTask.dto';
+import { v4 as uuidv4 } from 'uuid';
 
-import { query, validationResult, matchedData } from 'express-validator';
+import { validationResult, matchedData } from 'express-validator';
 
-interface ITask {
-    name: string;
-    description: string;
-}
+console.log(Task);
 
 export function createTask(req: Request<{}, {}, CreateTaskDto>, res: Response): any {
     const result = validationResult(req);
@@ -15,15 +13,17 @@ export function createTask(req: Request<{}, {}, CreateTaskDto>, res: Response): 
     if (!result.isEmpty())
         return res.status(400).send({ errors: result.array() })
 
-    const { name, description } = matchedData(req);
-    Task.create({ name, description })
-        .then((task: ITask) => res.status(201).json(task))
+    const { userId, title, description } = matchedData(req);
+    const id = uuidv4();
+
+    Task.create({ id, title, description, userId })
+        .then((task: TaskAttributes) => res.status(201).json(task))
         .catch((err: Error) => res.status(500).json(err));
 }
 
 export function getAllTasks(req: Request, res: Response): void {
     Task.findAll()
-        .then((task: ITask) => res.status(200).json(task))
+        .then((task) => res.status(200).json(task))
         .catch((err: Error) => res.status(500).json(err));
 }
 
@@ -35,7 +35,7 @@ export function getTaskById(req: Request, res: Response): any {
 
     const { id } = matchedData(req)
     Task.findByPk(id)
-        .then((task: ITask) => res.status(200).json(task))
+        .then((task) => res.status(200).json(task))
         .catch((err: Error) => res.status(500).json(err));
 }
 
@@ -45,13 +45,11 @@ export function updateTask(req: Request, res: Response): any {
     if (!result.isEmpty())
         return res.status(400).send({ errors: result.array() })
 
-    const id = req.params.id;
-    const { name, description } = req.body;
+    const { id, userId } = req.params;
+    const { title, description } = req.body;
 
-    console.log(name, description)
-
-    Task.update({ name, description }, { where: { id } })
-        .then(() => res.status(200).json({ name: name, description: description}))
+    Task.update({ id, userId, title, description }, { where: { id } })
+        .then(() => res.status(200).json({ title: title, description: description }))
         .catch((err: Error) => res.status(500).json(err));
 }
 
@@ -64,7 +62,7 @@ export function deleteTask(req: Request, res: Response): any {
     const { id } = matchedData(req)
     
     Task.findByPk(id)
-        .then((task: ITask) => Task.destroy({ where: { id } })
+        .then((task) => Task.destroy({ where: { id } })
             .then(() => res.status(200).json(task))
             .catch((err: Error) => res.status(500).json(err)))
         .catch((err: Error) => res.status(500).json(err));

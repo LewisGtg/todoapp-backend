@@ -4,7 +4,7 @@ import sequelize from "./db";
 import router from "./routes";
 import cors from "cors";
 import corsOptions from "./config/cors.config";
-import Task from "./models/task.model";
+import models from "./models";
 
 dotenv.config();
 
