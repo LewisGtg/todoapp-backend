@@ -6,7 +6,8 @@ import {
     createTaskValidationSchema,
     getTaskByIdValidationSchema,
     updateTaskValidationSchema,
-    deleteTaskValidationSchema
+    deleteTaskValidationSchema,
+    getTasksByUserIdValidationSchema
 } from '../utils/validationSchemas';
 
 const router = express.Router();
@@ -24,6 +25,12 @@ router.get(
     checkSchema(getTaskByIdValidationSchema),
     taskController.getTaskById
 );
+
+router.get(
+    '/user/:userId',
+    checkSchema(getTasksByUserIdValidationSchema),
+    taskController.getTasksByUserId
+)
 
 router.put(
     '/:id',

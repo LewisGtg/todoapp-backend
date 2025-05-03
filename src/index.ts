@@ -4,7 +4,7 @@ import sequelize from "./db";
 import router from "./routes";
 import cors from "cors";
 import corsOptions from "./config/cors.config";
-import models from "./models";
+import "./models";
 
 dotenv.config();
 
@@ -23,7 +23,4 @@ app.listen(port, async () => {
     } catch (error) {
         console.error('Unable to connect to the database:', error);
     }   
-
-    // await Task.sync({ force: true });
-    // console.log('All models were synchronized successfully.');
 })

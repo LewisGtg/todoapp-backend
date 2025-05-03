@@ -1,4 +1,4 @@
-import { Request, response, Response } from 'express';
+import { Request, Response } from 'express';
 import Task, { TaskAttributes } from '../models/task';
 import { CreateTaskDto } from 'src/dtos/CreateTask.dto';
 import { v4 as uuidv4 } from 'uuid';
@@ -28,12 +28,13 @@ export function getAllTasks(req: Request, res: Response): void {
 }
 
 export function getTaskById(req: Request, res: Response): any {
-    const result = validationResult(req)
+    const result = validationResult(req);
 
     if (!result.isEmpty())
         return res.status(400).send({ errors: result.array() })
+    
+    const { id } = matchedData(req);
 
-    const { id } = matchedData(req)
     Task.findByPk(id)
         .then((task) => res.status(200).json(task))
         .catch((err: Error) => res.status(500).json(err));
@@ -65,6 +66,19 @@ export function deleteTask(req: Request, res: Response): any {
         .then((task) => Task.destroy({ where: { id } })
             .then(() => res.status(200).json(task))
             .catch((err: Error) => res.status(500).json(err)))
+        .catch((err: Error) => res.status(500).json(err));
+}
+
+export function getTasksByUserId(req: Request, res: Response): any {
+    const result = validationResult(req);
+
+    if (!result.isEmpty())
+        return res.status(400).send({ errors: result.array() })
+
+    const { userId } = matchedData(req);
+
+    Task.findAll({ where: { userId } })
+        .then((task) => res.status(200).json(task))
         .catch((err: Error) => res.status(500).json(err));
 }
 

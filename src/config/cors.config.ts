@@ -1,7 +1,7 @@
 const corsOptions = {
-    origin: 'http://localhost:3000', // Replace with your client's origin or an array of origins
+    origin: 'http://localhost:3000',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true, // If you need to handle cookies
+    credentials: true,
     optionsSuccessStatus: 204,
 };
 

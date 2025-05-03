@@ -1,5 +1,3 @@
-import { error } from "console";
-
 export const createTaskValidationSchema = {
     userId: {
         notEmpty: {
@@ -34,6 +32,20 @@ export const getTaskByIdValidationSchema = {
     id: {
         isUUID: {
             errorMessage: "id must be a valid UUID"
+        },
+        notEmpty: {
+            errorMessage: "id cannot be empty"
+        }
+    }
+}
+
+export const getTasksByUserIdValidationSchema = {
+    userId: {
+        isUUID: {
+            errorMessage: "userId must be a valid UUID"
+        },
+        notEmpty: {
+            errorMessage: "userId cannot be empty"
         }
     }
 }
